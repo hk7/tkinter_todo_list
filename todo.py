@@ -3,9 +3,14 @@ from tkinter.font import Font
 from tkinter import filedialog
 import pickle
 
+import pathlib
+
+App_Path = 'D:/Users/haimk-2/Software2/Python/PythonProjects/Codemy/tkinter_todo'
+
 root = Tk()
 root.title('Codemy.com - ToDo List!')
-root.iconbitmap('c:/gui/codemy.ico')
+# root.iconbitmap('c:/gui/codemy.ico')
+root.iconbitmap('D:/Users/haimk-2/Software2/Python/PythonProjects/Codemy/codemy.ico')
 root.geometry("500x500")
 
 # Define our Font
@@ -88,8 +93,12 @@ def delete_crossed():
 			count += 1
 
 def save_list():
+	p = pathlib.PurePath(App_Path)
+	p = p.joinpath('data')
+	print(p)
 	file_name = filedialog.asksaveasfilename(
-		initialdir="C:/gui/data",
+		# initialdir="C:/gui/data",
+		initialdir=str(p),
 		title="Save File",
 		filetypes=(
 			("Dat Files", "*.dat"), 
@@ -121,8 +130,12 @@ def save_list():
 
 
 def open_list():
+	p = pathlib.PurePath(App_Path)
+	p = p.joinpath('data')
+	print(p)
 	file_name = filedialog.askopenfilename(
-		initialdir="C:/gui/data",
+		# initialdir="C:/gui/data",
+		initialdir=str(p),
 		title="Open File",
 		filetypes=(
 			("Dat Files", "*.dat"), 
