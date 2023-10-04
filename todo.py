@@ -1,3 +1,4 @@
+import tkinter as tk
 from tkinter import *
 from tkinter.font import Font
 from tkinter import filedialog
@@ -66,6 +67,8 @@ def delete_item():
 def add_item():
 	my_list.insert(END, my_entry.get())
 	my_entry.delete(0, END)
+	# status.set('new item added to the list')
+	status.config(text='new item added to the list')
 
 def cross_off_item():
 	# Cross off item
@@ -128,6 +131,8 @@ def save_list():
 		# Actually add the stuff to the file
 		pickle.dump(stuff, output_file)
 
+		status.config(text='save todo items to file')
+
 
 def open_list():
 	p = pathlib.PurePath(App_Path)
@@ -156,6 +161,7 @@ def open_list():
 		for item in stuff:
 			my_list.insert(END, item)
 
+		status.config(text='load todo items from file')
 
 
 
@@ -189,6 +195,29 @@ add_button.grid(row=0, column=1, padx=20)
 cross_off_button.grid(row=0, column=2)
 uncross_button.grid(row=0, column=3, padx=20)
 delete_crossed_button.grid(row=0, column=4)
+
+# add status bar
+# status = Label(root, text="Status bar...", bd=1, relief=SUNKEN, anchor=E)
+status = Label(root, text="Status bar...", bd=1, relief=SUNKEN, anchor=W)
+status.pack(side=tk.BOTTOM, fill=tk.X)
+
+
+# https://coderslegacy.com/python/create-a-status-bar-in-tkinter/
+class StatusBar(tk.Frame):
+    def __init__(self, master):
+        tk.Frame.__init__(self, master)
+        self.label = tk.Label(self, text="Status bar...", bd=1, relief=SUNKEN, anchor=E)
+        self.label.pack(side=tk.LEFT)
+        self.pack(side=tk.BOTTOM, fill=tk.X)
+
+    def set(self, newText):
+        self.label.config(text=newText)
+	
+    def clear(self):
+        self.label.config(text="")
+
+# status = StatusBar(root)
+
 
 root.mainloop()
 
