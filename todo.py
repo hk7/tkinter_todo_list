@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import *
 from tkinter.font import Font
 from tkinter import filedialog
+from tkinter import messagebox
+
 import pickle
 
 import pathlib
@@ -12,7 +14,7 @@ root = Tk()
 root.title('Codemy.com - ToDo List!')
 # root.iconbitmap('c:/gui/codemy.ico')
 root.iconbitmap('D:/Users/haimk-2/Software2/Python/PythonProjects/Codemy/codemy.ico')
-root.geometry("500x500")
+root.geometry("700x500")
 
 # Define our Font
 my_font = Font(
@@ -24,10 +26,36 @@ my_font = Font(
 my_frame = Frame(root)
 my_frame.pack(pady=10)
 
+
+def qqq_items_selected(event):
+    # get selected indices
+    selected_indices = my_list.curselection()
+    # get selected items
+    selected_langs = ",".join([my_list.get(i) for i in selected_indices])
+    msg = f'You selected: {selected_langs}'
+    status.config(text=msg)
+
+def items_selected(event):
+    # get selected indices
+    selected_indx = my_list.curselection()
+    # get selected items
+    msg = f'You selected: {my_list.get(selected_indx)}'
+    status.config(text=msg)
+
+def my_list_double_click(event):
+    # get selected indices
+    selected_indx = my_list.curselection()
+    # get selected items
+    msg = f'DoubleClick selected: {my_list.get(selected_indx)}'
+    status.config(text=msg)
+    msg2 = msg.replace(';', '\n')
+    messagebox.showinfo("Todo Item", msg2)
+
+
 # Create listbox
 my_list = Listbox(my_frame,
 	font=my_font,
-	width=25,
+	width=37,
 	height=5,
 	bg="SystemButtonFace",
 	bd=0,
@@ -37,6 +65,11 @@ my_list = Listbox(my_frame,
 	activestyle="none")
 
 my_list.pack(side=LEFT, fill=BOTH)
+
+my_list.bind('<<ListboxSelect>>', items_selected)
+my_list.bind('<Double-1>', my_list_double_click) 
+
+
 
 # Create dummy list
 #stuff = ["Walk The Dog", "Buy Groceries", "Take A Nap", "Learn Tkinter", "Rule The World"]
@@ -53,7 +86,7 @@ my_list.config(yscrollcommand=my_scrollbar.set)
 my_scrollbar.config(command=my_list.yview)
 
 # create entry box to add items to the list
-my_entry = Entry(root, font=("Helvetica", 24), width=26)
+my_entry = Entry(root, font=("Helvetica", 24), width=37)
 my_entry.pack(pady=20)
 
 # Create a button frame
@@ -65,6 +98,10 @@ def delete_item():
 	my_list.delete(ANCHOR)
 
 def add_item():
+	if not my_entry.get():
+		status.config(text='text-box is empty, no item added to the list')
+		return
+
 	my_list.insert(END, my_entry.get())
 	my_entry.delete(0, END)
 	# status.set('new item added to the list')
